@@ -9,7 +9,7 @@ public class ConnectionFactory {
     public Connection getConnection()
         throws SQLException, ClassNotFoundException {
 
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://localhost/sucupirafilter";
         return DriverManager.getConnection(url, "sucupirafilter", "senha");
 
