@@ -2,6 +2,20 @@ package br.edu.ufabc.sucupirafilter;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.sql.SQLException;
+import java.util.List;
+
+import br.edu.ufabc.sucupirafilter.model.AreaAvaliacao;
+import br.edu.ufabc.sucupirafilter.model.AreaConhecimento;
+import br.edu.ufabc.sucupirafilter.model.Instituicao;
+import br.edu.ufabc.sucupirafilter.model.Programa;
+import br.edu.ufabc.sucupirafilter.model.Curso;
+
+import br.edu.ufabc.sucupirafilter.dao.AreaAvaliacaoDAO;
+import br.edu.ufabc.sucupirafilter.dao.AreaConhecimentoDAO;
+import br.edu.ufabc.sucupirafilter.dao.InstituicaoDAO;
+import br.edu.ufabc.sucupirafilter.dao.ProgramaDAO;
+import br.edu.ufabc.sucupirafilter.dao.CursoDAO;
 
 public class App {
 
@@ -129,9 +143,61 @@ public class App {
 
     }
     
-    public static void main( String[] args ) {
+    public static void main( String[] args )
+        throws ClassNotFoundException, SQLException {
 
         System.out.println("Sucupira Filter - Tratamento de Dados");
+        
+        AreaAvaliacaoDAO aaDAO = new AreaAvaliacaoDAO();
+        AreaConhecimentoDAO acDAO = new AreaConhecimentoDAO();
+        InstituicaoDAO iDAO = new InstituicaoDAO();
+        ProgramaDAO pDAO = new ProgramaDAO();
+        CursoDAO cDAO = new CursoDAO();
+        
+        List<AreaAvaliacao> aaList = aaDAO.findAll();
+        List<AreaConhecimento> acList = acDAO.findAll();
+        List<Instituicao> iList = iDAO.findAll();
+        List<Programa> pList = pDAO.findAll();
+        List<Curso> cList = cDAO.findAll();
+        
+        for (AreaAvaliacao aa : aaList) {
+            aa.setNome(tratamento(aa.getNome()));
+            aaDAO.update(aa);
+        }
+        
+        for (AreaConhecimento ac : acList) {
+            ac.setNome(tratamento(ac.getNome()));
+            acDAO.update(ac);
+        }
+        
+        for (Instituicao i : iList) {
+            
+            i.setNome(tratamento(i.getNome()));
+            i.setAcronimo(tratamento(i.getAcronimo()));
+            
+            if (i.getEndereco() != null)
+                i.setEndereco(tratamento(i.getEndereco()));
+            
+            if (i.getCidade() != null)
+                i.setCidade(tratamento(i.getCidade()));
+            
+            if (i.getEstado() != null)
+                i.setEstado(tratamento(i.getEstado()));
+            
+            iDAO.update(i);
+        }
+        
+        for (Programa p : pList) {
+            p.setNome(tratamento(p.getNome()));
+            pDAO.update(p);
+        }
+        
+        for (Curso c : cList) {
+            c.setNome(tratamento(c.getNome()));
+            cDAO.update(c);
+        }
+        
+        System.out.println("Concluido.");
 
     }
 
