@@ -138,6 +138,10 @@ public class App {
         Pattern p29 = Pattern.compile("&ordm;");
         matcher = p29.matcher(text);
         text = matcher.replaceAll("º");
+        
+        Pattern p30 = Pattern.compile("&Ocirc;");
+        matcher = p30.matcher(text);
+        text = matcher.replaceAll("Ô");
 
         return text;
 
