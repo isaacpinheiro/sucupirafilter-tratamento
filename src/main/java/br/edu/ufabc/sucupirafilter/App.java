@@ -142,6 +142,10 @@ public class App {
         Pattern p30 = Pattern.compile("&Ocirc;");
         matcher = p30.matcher(text);
         text = matcher.replaceAll("Ô");
+        
+        Pattern p31 = Pattern.compile("&agrave;");
+        matcher = p31.matcher(text);
+        text = matcher.replaceAll("à");
 
         return text;
 
